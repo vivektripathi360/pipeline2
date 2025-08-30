@@ -5,6 +5,13 @@ terraform {
       version = "4.42.0"
     }
   }
+ backend "azurerm" {
+    resource_group_name = "-rg"
+    storage_account_name = "-account"                                 # Can be passed via `-backend-config=`"storage_account_name=<storage account name>"` in the `init` command.
+    container_name       = "abc"                                  # Can be passed via `-backend-config=`"container_name=<container name>"` in the `init` command.
+    key                  = "terraform.tfstate"                   # Can be passed via `-backend-config=`"key=<blob key name>"` in the `init` command.
+  }
+
 }
 
 
@@ -21,6 +28,7 @@ resource "azurerm_resource_group" "example" {
 }
 
 resource "azurerm_storage_account" "example" {
+    depends_on = [ azurerm_resource_group.example ]
   name                     = "-account"
   resource_group_name      = azurerm_resource_group.example.name
   location                 = azurerm_resource_group.example.location
@@ -29,3 +37,14 @@ resource "azurerm_storage_account" "example" {
   account_replication_type = "LRS"
  
 }
+
+
+
+    
+resource "azurerm_storage_container" "example" {
+    depends_on = [ azurerm_storage_account.example ]
+  name                  = "abc"
+  storage_account_id    = azurerm_storage_account.example.id
+  container_access_type = "private"
+}
+  
