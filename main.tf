@@ -7,9 +7,9 @@ terraform {
   }
  backend "azurerm" {
     resource_group_name = "-rg"
-    storage_account_name = "-account"                                 # Can be passed via `-backend-config=`"storage_account_name=<storage account name>"` in the `init` command.
-    container_name       = "abc"                                  # Can be passed via `-backend-config=`"container_name=<container name>"` in the `init` command.
-    key                  = "terraform.tfstate"                   # Can be passed via `-backend-config=`"key=<blob key name>"` in the `init` command.
+    storage_account_name = "-account"                                
+    container_name       = "abc"                                 
+    key                  = "terraform.tfstate"                
   }
 
 }
